@@ -26,14 +26,14 @@ include/config/project.release: $(CURDIR)/Makefile
 
 export PROJECT PROJECTVERSION PROJECTRELEASE
 
-scripts/kconfig/.mconf-cfg: scripts/kconfig/mconf-cfg.sh
-	@./scripts/kconfig/mconf-cfg.sh > $@
-
 .PHONY: menuconfig
 default: menuconfig
 
-menuconfig: include/config/project.release scripts/kconfig/.mconf-cfg
-	@$(MAKE) -C scripts/kconfig mconf
+scripts/kconfig/mconf:
+	$(MAKE) -C scripts/kconfig/ .mconf-cfg
+	$(MAKE) -C scripts/kconfig/ mconf
+
+menuconfig: include/config/project.release scripts/kconfig/mconf
 	@./scripts/kconfig/mconf Kconfig
 
 .PHONY: clean
@@ -61,8 +61,8 @@ scripts/kconfig/conf:
 simple-targets := allnoconfig allyesconfig alldefconfig randconfig
 PHONY += $(simple-targets)
 
-$(simple-targets):
-	$(MAKE) -C scripts/kconfig $@
+$(simple-targets): scripts/kconfig/conf
+	./scripts/kconfig/conf --$@ Kconfig
 
 defconfig-%:: scripts/kconfig/conf
 	@./scripts/kconfig/conf --defconfig=defconfigs/$(@:defconfig-%=%) Kconfig

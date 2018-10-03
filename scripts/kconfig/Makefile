@@ -11,22 +11,21 @@ zconf.tab.c: zconf.y
 conf: conf.o zconf.tab.o
 	$(CC) -o conf $^
 
-simple-targets := oldconfig allnoconfig allyesconfig allmodconfig \
-	alldefconfig randconfig listnewconfig olddefconfig syncconfig
-PHONY += $(simple-targets)
-
-$(simple-targets): conf
-	@cd $(CURDIR)/../../ &&	./scripts/kconfig/$< $(silent) --$@ Kconfig
-
 mconf_CFLAGS :=  $(shell test -f $(CURDIR)/.mconf-cfg && . $(CURDIR)/.mconf-cfg && echo $$cflags) -DLOCALE
 mconf_LDFLAGS := $(shell test -f $(CURDIR)/.mconf-cfg && . $(CURDIR)/.mconf-cfg && echo $$libs)
 mconf: CFLAGS += ${mconf_CFLAGS}
 
-mconf: .mconf-cfg mconf.o zconf.tab.c $(LXDIALOG)
-	$(CC) -o mconf $(MCONF_DEPS) $(mconf_LDFLAGS)
+include $(CURDIR)/../Kbuild.include
+# check if necessary packages are available, and configure build flags
+define filechk_conf_cfg
+	$(CURDIR)/$<
+endef
 
-defconfig-%:: conf
-	@cd $(CURDIR)/../../ &&	./scripts/kconfig/$< --defconfig=defconfigs/$(@:defconfig-%=%) Kconfig
+.%conf-cfg: %conf-cfg.sh
+	$(call filechk,conf_cfg)
+
+mconf: .mconf-cfg conf mconf.o zconf.tab.c $(LXDIALOG)
+	$(CC) -o mconf $(MCONF_DEPS) $(mconf_LDFLAGS)
 
 .PHONY: help
 help:
