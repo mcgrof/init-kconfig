@@ -1,0 +1,6 @@
+#
+# Automatically generated file; DO NOT EDIT.
+# init-kconfig 4.19.0-rc6-g235e789-dirty
+#
+CONFIG_FOO=y
+# CONFIG_BAR is not set
