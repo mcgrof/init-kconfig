@@ -1,0 +1,10 @@
+scripts/kconfig/.mconf-cfg
+scripts/kconfig/mconf
+include/config/auto.conf
+include/config/auto.conf.cmd
+include/config/tristate.conf
+include/generated/autoconf.h
+
+.config
+.config.old
+*.o

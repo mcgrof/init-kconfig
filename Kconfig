@@ -1,0 +1,22 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt
+
+mainmenu "$(PROJECT) $(VERSION)"
+
+config FOO
+	bool "Foo support"
+	help
+	  This enables compilation of foo. It is an example of a random
+	  component of a project.
+
+config BAR
+	bool "Bar support"
+	help
+	  This enables compilation of the feature bar.
+
+config BAZ
+	bool "Baz support"
+	depends on BAR
+	help
+	  This enables baz. It demos dependency annotations.
