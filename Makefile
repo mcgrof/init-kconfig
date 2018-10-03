@@ -49,8 +49,12 @@ version-check: include/config/project.release
 .PHONY: help
 help:
 	@$(MAKE) -s -C scripts/kconfig help
+	@echo "defconfig-foo      - Use the defconfigs/foo file for our configuration"
 	@echo "version-check      - demos version release functionality"
 	@echo "clean              - cleans all output files"
+
+scripts/kconfig/conf:
+	$(MAKE) -C scripts/kconfig conf
 
 # More are supported, however we only list the ones tested on this top
 # level Makefile.
@@ -59,3 +63,6 @@ PHONY += $(simple-targets)
 
 $(simple-targets):
 	$(MAKE) -C scripts/kconfig $@
+
+defconfig-%:: scripts/kconfig/conf
+	@./scripts/kconfig/conf --defconfig=defconfigs/$(@:defconfig-%=%) Kconfig

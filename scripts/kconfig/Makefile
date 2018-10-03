@@ -25,6 +25,8 @@ mconf: CFLAGS += ${mconf_CFLAGS}
 mconf: .mconf-cfg mconf.o zconf.tab.c $(LXDIALOG)
 	$(CC) -o mconf $(MCONF_DEPS) $(mconf_LDFLAGS)
 
+defconfig-%:: conf
+	@cd $(CURDIR)/../../ &&	./scripts/kconfig/$< --defconfig=defconfigs/$(@:defconfig-%=%) Kconfig
 
 .PHONY: help
 help:
@@ -32,6 +34,7 @@ help:
 	@echo "allyesconfig       - enables all bells and whistles"
 	@echo "allnoconfig        - disables all bells and whistles"
 	@echo "randconfig         - random configuration"
+	@echo "defconfig-*        - Use a default config, pick one from defconfig directory"
 
 .PHONY: clean
 clean:
