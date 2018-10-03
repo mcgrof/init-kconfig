@@ -48,6 +48,14 @@ version-check: include/config/project.release
 
 .PHONY: help
 help:
-	@echo "menuconfig         - demos the menuconfig functionality"
+	@$(MAKE) -s -C scripts/kconfig help
 	@echo "version-check      - demos version release functionality"
 	@echo "clean              - cleans all output files"
+
+# More are supported, however we only list the ones tested on this top
+# level Makefile.
+simple-targets := allnoconfig allyesconfig alldefconfig randconfig
+PHONY += $(simple-targets)
+
+$(simple-targets):
+	$(MAKE) -C scripts/kconfig $@

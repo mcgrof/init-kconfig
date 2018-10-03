@@ -11,6 +11,13 @@ zconf.tab.c: zconf.y
 conf: conf.o zconf.tab.o
 	$(CC) -o conf $^
 
+simple-targets := oldconfig allnoconfig allyesconfig allmodconfig \
+	alldefconfig randconfig listnewconfig olddefconfig syncconfig
+PHONY += $(simple-targets)
+
+$(simple-targets): conf
+	@cd $(CURDIR)/../../ &&	./scripts/kconfig/$< $(silent) --$@ Kconfig
+
 mconf_CFLAGS :=  $(shell test -f $(CURDIR)/.mconf-cfg && . $(CURDIR)/.mconf-cfg && echo $$cflags) -DLOCALE
 mconf_LDFLAGS := $(shell test -f $(CURDIR)/.mconf-cfg && . $(CURDIR)/.mconf-cfg && echo $$libs)
 mconf: CFLAGS += ${mconf_CFLAGS}
@@ -18,7 +25,15 @@ mconf: CFLAGS += ${mconf_CFLAGS}
 mconf: .mconf-cfg mconf.o zconf.tab.c $(LXDIALOG)
 	$(CC) -o mconf $(MCONF_DEPS) $(mconf_LDFLAGS)
 
+
+.PHONY: help
+help:
+	@echo "menuconfig         - demos the menuconfig functionality"
+	@echo "allyesconfig       - enables all bells and whistles"
+	@echo "allnoconfig        - disables all bells and whistles"
+	@echo "randconfig         - random configuration"
+
 .PHONY: clean
 clean:
-	@rm -f mconf conf *.o lxdialog/*.o *.o zconf.tab.c .mconf-cfg
+	@rm -f conf mconf conf *.o lxdialog/*.o *.o zconf.tab.c .mconf-cfg
 	@rm -rf *.o.d
