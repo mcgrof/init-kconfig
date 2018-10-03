@@ -37,6 +37,14 @@ Additionally since kconfig could use more documentation, I would accept patches
 to help start documenting different components not yet documented with the
 intentions of eventually getting this upstream.
 
+# Versioning
+
+It is not a requirement to follow a versioning scheme as used in the Linux
+kernel to be able to use kconfig. However this project embraces it to help
+projects also pick such practice up if so desired. The main version if kept
+as variables on the top level Makefile and an extra appended version string is
+supplied if the tree is dirty, this is implemented with scripts/setlocalversion.
+
 # Tracking linux-next
 
 This documentation tracks linux-next, as such go clone it if you want to

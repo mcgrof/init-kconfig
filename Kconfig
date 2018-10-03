@@ -2,7 +2,7 @@
 # For a description of the syntax of this configuration file, see:
 # https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt
 
-mainmenu "$(PROJECT) $(VERSION)"
+mainmenu "$(PROJECT) $(PROJECTRELEASE)"
 
 config FOO
 	bool "Foo support"
