@@ -40,7 +40,8 @@ menuconfig: include/config/project.release scripts/kconfig/mconf
 
 clean:
 	$(MAKE) -C scripts/kconfig/ clean
-	@rm -f $(CURDIR)/include/config/project.release
+	@rm -f $(CURDIR)/include/config/
+	@rm -f $(CURDIR)/include/generated/
 
 version-check: include/config/project.release
 	@echo Version: $(PROJECTVERSION)

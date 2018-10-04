@@ -64,3 +64,15 @@ Documentation for kconfig is upstream on Linux, so use and refer to that, be
 sure to read this and the current limitations noted there in.
 
   * [Linux kconfig docs](https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt)
+
+# Notes
+
+If you run `make menuconfig` once, it will save the results into the files:
+
+  * .config
+  * include/generated/autoconf.h
+
+If you run `make menuconfig` a second time, only `.config` will be updated.
+This could either be a bug or a feature upstream. In any case, if you want
+to regenerate include/generated/autoconf.h based on new results you should
+be sure to run `make clean` prior to running `make menuconfig`.
