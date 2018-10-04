@@ -10,8 +10,13 @@ PROJECTVERSION = $(VERSION)$(if $(PATCHLEVEL),.$(PATCHLEVEL)$(if $(SUBLEVEL),.$(
 # case were have modified our tree.
 PROJECTRELEASE = $(shell test -f $(CURDIR)/include/config/project.release && cat $(CURDIR)/include/config/project.release 2> /dev/null)
 
-.PHONY: default
-default: example
+# Each subdirectory can have two targets: all and clean
+# all: builds all requirements, and if it is a directory dirname and if its
+# a requirement to be linked in, it must also build its respective dirname.o
+# as dirname/dirname.o will be added to the obj-y linked set for the final
+# binary.
+PHONY += all
+all: example
 
 INCLUDES = -I include/
 CFLAGS += $(INCLUDES)
@@ -20,7 +25,7 @@ scripts/kconfig/mconf:
 	$(MAKE) -C scripts/kconfig/ .mconf-cfg
 	$(MAKE) -C scripts/kconfig/ mconf
 
-.PHONY: menuconfig
+PHONY += menuconfig
 menuconfig: include/config/project.release scripts/kconfig/mconf
 	@./scripts/kconfig/mconf Kconfig
 
@@ -29,10 +34,21 @@ menuconfig: include/config/project.release scripts/kconfig/mconf
 obj-y = main.o
 obj-$(CONFIG_FOO) += foo.o
 obj-$(CONFIG_BAR) += bar.o
-obj-$(CONFIG_BAZ) += bar.o
+obj-$(CONFIG_BAZ) += baz.o
+obj-$(CONFIG_ALPHA) += alpha/
+
+include scripts/objects.Makefile
+
+subs: $(subdir-y)
+	@echo dirs: $(subdir-y)
+	@echo obj-y: $(obj-y)
+	@echo subdir-y-objs: $(subdir-y-objs)
+
+clean-subs: $(clean-subdirs)
+	@echo clean-subs: $(clean-subdirs)
 
 example: $(obj-y)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $(obj-y)
 
 %.o: %.c *.h
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $<
@@ -50,14 +66,14 @@ include/config/project.release: $(CURDIR)/Makefile
 
 export PROJECT PROJECTVERSION PROJECTRELEASE
 
-.PHONY: clean
-clean:
+PHONY += clean
+clean: $(clean-subdirs)
 	$(MAKE) -C scripts/kconfig/ clean
 	@rm -f *.o example
 
-.PHONY: mrproper
+PHONY += mrproper
 mrproper:
-	$(MAKE) -C clean
+	$(MAKE) clean
 	@rm -rf $(CURDIR)/include/config/
 	@rm -rf $(CURDIR)/include/generated/
 	@rm -f .config
@@ -66,7 +82,7 @@ version-check: include/config/project.release
 	@echo Version: $(PROJECTVERSION)
 	@echo Release: $(PROJECTRELEASE)
 
-.PHONY: help
+PHONY += help
 help:
 	@$(MAKE) -s -C scripts/kconfig help
 	@echo "Defaults configs:"					;\
@@ -90,3 +106,5 @@ $(simple-targets): scripts/kconfig/conf
 
 defconfig-%:: scripts/kconfig/conf
 	@./scripts/kconfig/conf --defconfig=defconfigs/$(@:defconfig-%=%) Kconfig
+
+.PHONY: $(PHONY)

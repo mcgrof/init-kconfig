@@ -20,3 +20,8 @@ config BAZ
 	depends on BAR
 	help
 	  This enables baz. It demos dependency annotations.
+
+config ALPHA
+	bool "Alpha support"
+	help
+	  This enables alpha. An example directory depenency.
