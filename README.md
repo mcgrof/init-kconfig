@@ -75,4 +75,4 @@ If you run `make menuconfig` once, it will save the results into the files:
 If you run `make menuconfig` a second time, only `.config` will be updated.
 This could either be a bug or a feature upstream. In any case, if you want
 to regenerate include/generated/autoconf.h based on new results you should
-be sure to run `make clean` prior to running `make menuconfig`.
+be sure to run `make mrproper` prior to running `make menuconfig`.

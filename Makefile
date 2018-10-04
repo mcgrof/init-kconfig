@@ -51,12 +51,16 @@ include/config/project.release: $(CURDIR)/Makefile
 export PROJECT PROJECTVERSION PROJECTRELEASE
 
 .PHONY: clean
-
 clean:
 	$(MAKE) -C scripts/kconfig/ clean
+	@rm -f *.o example
+
+.PHONY: mrproper
+mrproper:
+	$(MAKE) -C clean
 	@rm -rf $(CURDIR)/include/config/
 	@rm -rf $(CURDIR)/include/generated/
-	@rm -f *.o example .config
+	@rm -f .config
 
 version-check: include/config/project.release
 	@echo Version: $(PROJECTVERSION)
