@@ -31,6 +31,7 @@ clean:
 
 PHONY += mrproper
 mrproper:
+	$(MAKE) -f scripts/build.Makefile clean
 	$(MAKE) -f scripts/build.Makefile $@
 
 PHONY += help
