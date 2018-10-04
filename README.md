@@ -33,9 +33,18 @@ For details refer to the [CONTRIBUTING](./CONTRIBUTING) file.
 # Sending patches
 
 You can send patches to help make adjustments / keep things in sync.
+Helping make the build process easier to expand, for instance the
+subdirectory automatic traversing is welcome.
+
 Additionally since kconfig could use more documentation, I would accept patches
 to help start documenting different components not yet documented with the
-intentions of eventually getting this upstream.
+compromise that the goal is to eventually get this upstream.
+
+You can send patches to:
+
+```
+mcgrof@kernel.org
+```
 
 # Versioning
 
@@ -44,6 +53,17 @@ kernel to be able to use kconfig. However this project embraces it to help
 projects also pick such practice up if so desired. The main version if kept
 as variables on the top level Makefile and an extra appended version string is
 supplied if the tree is dirty, this is implemented with scripts/setlocalversion.
+
+# Object targets
+
+This fork follows the practive of using `$obj-y` targets for build targets,
+however its solution is much simpler than the one in the kernel. It does not
+traverse subdirectories either. Its a simple solution to at least help you
+devise your own solutions for more complex builds.
+
+# TODO
+
+  * Make subdirectory traversing easier and automatic.
 
 # Tracking linux-next
 
