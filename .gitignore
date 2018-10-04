@@ -5,9 +5,14 @@ include/config/auto.conf.cmd
 include/config/tristate.conf
 include/generated/autoconf.h
 
+# part of kconfig
+include/config/*
+
 # Not part of kconfig
 include/config/project.release
 
 .config
 .config.old
 *.o
+
+example

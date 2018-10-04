@@ -11,7 +11,31 @@ PROJECTVERSION = $(VERSION)$(if $(PATCHLEVEL),.$(PATCHLEVEL)$(if $(SUBLEVEL),.$(
 PROJECTRELEASE = $(shell test -f $(CURDIR)/include/config/project.release && cat $(CURDIR)/include/config/project.release 2> /dev/null)
 
 .PHONY: default
-default: menuconfig
+default: example
+
+INCLUDES = -I include/
+CFLAGS += $(INCLUDES)
+
+scripts/kconfig/mconf:
+	$(MAKE) -C scripts/kconfig/ .mconf-cfg
+	$(MAKE) -C scripts/kconfig/ mconf
+
+.PHONY: menuconfig
+menuconfig: include/config/project.release scripts/kconfig/mconf
+	@./scripts/kconfig/mconf Kconfig
+
+-include .config
+
+obj-y = main.o
+obj-$(CONFIG_FOO) += foo.o
+obj-$(CONFIG_BAR) += bar.o
+obj-$(CONFIG_BAZ) += bar.o
+
+example: $(obj-y)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^
+
+%.o: %.c *.h
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $<
 
 # We need some generic definitions (do not try to remake the file).
 scripts/Kbuild.include: ;
@@ -26,22 +50,13 @@ include/config/project.release: $(CURDIR)/Makefile
 
 export PROJECT PROJECTVERSION PROJECTRELEASE
 
-.PHONY: menuconfig
-default: menuconfig
-
-scripts/kconfig/mconf:
-	$(MAKE) -C scripts/kconfig/ .mconf-cfg
-	$(MAKE) -C scripts/kconfig/ mconf
-
-menuconfig: include/config/project.release scripts/kconfig/mconf
-	@./scripts/kconfig/mconf Kconfig
-
 .PHONY: clean
 
 clean:
 	$(MAKE) -C scripts/kconfig/ clean
-	@rm -f $(CURDIR)/include/config/
-	@rm -f $(CURDIR)/include/generated/
+	@rm -rf $(CURDIR)/include/config/
+	@rm -rf $(CURDIR)/include/generated/
+	@rm -f *.o example .config
 
 version-check: include/config/project.release
 	@echo Version: $(PROJECTVERSION)
@@ -50,7 +65,11 @@ version-check: include/config/project.release
 .PHONY: help
 help:
 	@$(MAKE) -s -C scripts/kconfig help
-	@echo "defconfig-foo      - Use the defconfigs/foo file for our configuration"
+	@echo "Defaults configs:"					;\
+	(cd defconfigs ; for f in $$(ls) ; do				\
+		echo "defconfig-$$f"					;\
+	done )
+	@echo "Debugging"
 	@echo "version-check      - demos version release functionality"
 	@echo "clean              - cleans all output files"
 
