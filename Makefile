@@ -50,10 +50,6 @@ clean-subs: $(clean-subdirs)
 example: $(obj-y)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $(obj-y)
 
-%.o: %.c *.h
-	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $<
-
-# We need some generic definitions (do not try to remake the file).
 scripts/Kbuild.include: ;
 include scripts/Kbuild.include
 

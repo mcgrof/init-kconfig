@@ -1,3 +1,7 @@
+# Generic rule, you can be more specific in your own makefiles.
+%.o: %.c *.h
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $<
+
 # Capture directories on obj-y and remove their leading character
 # We will use this to construct a subdir object target for each, and
 # a respective clean target.
