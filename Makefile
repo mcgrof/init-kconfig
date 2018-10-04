@@ -22,7 +22,7 @@ obj-$(CONFIG_ALPHA) += alpha/
 include scripts/objects.Makefile
 
 example: $(obj-y)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $(obj-y)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^
 
 PHONY += clean
 clean:
