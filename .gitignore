@@ -1,5 +1,4 @@
 scripts/kconfig/.mconf-cfg
-scripts/kconfig/mconf
 include/config/auto.conf
 include/config/auto.conf.cmd
 include/config/tristate.conf
