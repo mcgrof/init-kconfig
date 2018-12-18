@@ -1,6 +1,5 @@
 CFLAGS=-Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
 LXDIALOG := lxdialog/checklist.o lxdialog/inputbox.o lxdialog/menubox.o lxdialog/textbox.o lxdialog/util.o lxdialog/yesno.o
-MCONF_DEPS := mconf.o zconf.tab.c $(LXDIALOG)
 
 default: mconf
 
@@ -24,7 +23,8 @@ endef
 .%conf-cfg: %conf-cfg.sh
 	$(call filechk,conf_cfg)
 
-mconf: .mconf-cfg conf mconf.o zconf.tab.c $(LXDIALOG)
+MCONF_DEPS := mconf.o zconf.tab.c $(LXDIALOG)
+mconf: .mconf-cfg conf $(MCONF_DEPS)
 	$(CC) -o mconf $(MCONF_DEPS) $(mconf_LDFLAGS)
 
 .PHONY: help
