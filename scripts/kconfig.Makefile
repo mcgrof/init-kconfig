@@ -28,8 +28,8 @@ scripts/kconfig/mconf:
 	$(MAKE) -C scripts/kconfig/ mconf
 
 PHONY += menuconfig
-menuconfig: include/config/project.release scripts/kconfig/mconf
-	@./scripts/kconfig/mconf Kconfig
+menuconfig: scripts/kconfig/mconf include/config/project.release
+	@$< Kconfig
 
 scripts/kconfig/conf:
 	$(MAKE) -C scripts/kconfig conf
@@ -40,9 +40,9 @@ simple-targets := allnoconfig allyesconfig alldefconfig randconfig
 PHONY += $(simple-targets)
 
 $(simple-targets): scripts/kconfig/conf
-	./scripts/kconfig/conf --$@ Kconfig
+	$< --$@ Kconfig
 
 defconfig-%:: scripts/kconfig/conf
-	@./scripts/kconfig/conf --defconfig=defconfigs/$(@:defconfig-%=%) Kconfig
+	@$< --defconfig=defconfigs/$(@:defconfig-%=%) Kconfig
 
 .PHONY: $(PHONY)
