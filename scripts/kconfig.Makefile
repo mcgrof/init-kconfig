@@ -31,6 +31,14 @@ PHONY += menuconfig
 menuconfig: scripts/kconfig/mconf include/config/project.release
 	@$< Kconfig
 
+scripts/kconfig/nconf:
+	$(MAKE) -C scripts/kconfig/ .nconf-cfg
+	$(MAKE) -C scripts/kconfig/ nconf
+
+PHONY += nconfig
+nconfig: scripts/kconfig/nconf include/config/project.release
+	@$< Kconfig
+
 scripts/kconfig/conf:
 	$(MAKE) -C scripts/kconfig conf
 

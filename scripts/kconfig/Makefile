@@ -14,6 +14,10 @@ mconf_CFLAGS :=  $(shell test -f $(CURDIR)/.mconf-cfg && . $(CURDIR)/.mconf-cfg 
 mconf_LDFLAGS := $(shell test -f $(CURDIR)/.mconf-cfg && . $(CURDIR)/.mconf-cfg && echo $$libs)
 mconf: CFLAGS += ${mconf_CFLAGS}
 
+nconf_CFLAGS :=  $(shell test -f $(CURDIR)/.nconf-cfg && . $(CURDIR)/.nconf-cfg && echo $$cflags) -DLOCALE
+nconf_LDFLAGS := $(shell test -f $(CURDIR)/.nconf-cfg && . $(CURDIR)/.nconf-cfg && echo $$libs)
+nconf: CFLAGS += ${nconf_CFLAGS}
+
 include $(CURDIR)/../Kbuild.include
 # check if necessary packages are available, and configure build flags
 define filechk_conf_cfg
@@ -27,9 +31,14 @@ MCONF_DEPS := mconf.o zconf.tab.c $(LXDIALOG)
 mconf: .mconf-cfg conf $(MCONF_DEPS)
 	$(CC) -o mconf $(MCONF_DEPS) $(mconf_LDFLAGS)
 
+NCONF_DEPS := nconf.o nconf.gui.o zconf.tab.c
+nconf: .nconf-cfg conf $(NCONF_DEPS)
+	$(CC) -o nconf $(NCONF_DEPS) $(nconf_LDFLAGS)
+
 .PHONY: help
 help:
 	@echo "menuconfig         - demos the menuconfig functionality"
+	@echo "nconfig            - demos the nconfig functionality"
 	@echo "allyesconfig       - enables all bells and whistles"
 	@echo "allnoconfig        - disables all bells and whistles"
 	@echo "randconfig         - random configuration"
