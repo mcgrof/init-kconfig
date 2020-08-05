@@ -4,7 +4,16 @@
 # obj-y build helpers.
 
 # Bring in all the options selected
--include .config
+#
+# Using optional include with -include will still try to process our .config
+# target, and we don't want that unless the user manually specified that or
+# its part of a dependency chain listing. To do this we have to avoid doing
+# the optional include unless it actually exists, so we re-invent an optional
+# include which doesn't get used unless actually used as a target.
+ifeq (,$(wildcard $(CURDIR)/.config))
+else
+include .config
+endif
 
 # Kconfig filechk magic helper
 include scripts/Kbuild.include
