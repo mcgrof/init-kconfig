@@ -9,6 +9,7 @@ PHONY += all
 all: example
 
 -include scripts/kconfig.Makefile
+include Makefile.subtrees
 
 INCLUDES = -I include/
 CFLAGS += $(INCLUDES)
