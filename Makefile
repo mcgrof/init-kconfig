@@ -8,7 +8,7 @@ EXTRAVERSION = -rc6
 PHONY += all
 all: example
 
-include scripts/kconfig.Makefile
+-include scripts/kconfig.Makefile
 
 INCLUDES = -I include/
 CFLAGS += $(INCLUDES)
