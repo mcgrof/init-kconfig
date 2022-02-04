@@ -8,8 +8,8 @@ EXTRAVERSION = -rc6
 PHONY += all
 all: example
 
-export KCONFIG_DIR="scripts/kconfig"
--include $(KCONFIG_DIR)/kconfig.Makefile
+export KCONFIG_DIR=$(CURDIR)/scripts/kconfig
+include $(KCONFIG_DIR)/kconfig.Makefile
 include Makefile.subtrees
 
 INCLUDES = -I include/
