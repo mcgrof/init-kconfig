@@ -3,8 +3,8 @@ add-kconfig-remote:
 	git remote add kconfig https://github.com/mcgrof/kconfig.git
 
 add-kconfig:
-	git subtree add --prefix=scripts/ kconfig master
+	git subtree add --prefix=scripts/kconfig/ kconfig master
 
 refresh-kconfig:
 	git fetch kconfig
-	git subtree pull --prefix=scripts/ kconfig master
+	git subtree pull --prefix=scripts/kconfig/ kconfig master
