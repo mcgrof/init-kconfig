@@ -8,7 +8,7 @@ EXTRAVERSION = -rc6
 PHONY += all
 all: example
 
--include scripts/kconfig.Makefile
+-include scripts/kconfig/kconfig.Makefile
 include Makefile.subtrees
 
 INCLUDES = -I include/

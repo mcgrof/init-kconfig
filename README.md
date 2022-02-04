@@ -52,7 +52,8 @@ It is not a requirement to follow a versioning scheme as used in the Linux
 kernel to be able to use kconfig. However this project embraces it to help
 projects also pick such practice up if so desired. The main version if kept
 as variables on the top level Makefile and an extra appended version string is
-supplied if the tree is dirty, this is implemented with scripts/setlocalversion.
+supplied if the tree is dirty, this is implemented with
+scripts/kconfig/setlocalversion.
 
 # Object targets
 
